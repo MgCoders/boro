@@ -117,8 +117,7 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         protected void onPostExecute(List<Issue> issues) {
-            mIssues.addAll(issues);
-            mRecyclerView.getAdapter().notifyDataSetChanged();
+            mAdapter.updateList(issues);
         }
 
         @Override

@@ -3,7 +3,7 @@ package uy.mgcoders.boro.comm;
 import android.util.Log;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
@@ -16,12 +16,15 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import uy.mgcoders.boro.objects.Issue;
+
 /**
  * Created by r on 25/04/15.
  */
 public class XmlParser {
 
     static final String KEY_ISSUE = "issue";
+    static final String KEY_FIELD = "field";
 
 
     public Document getDomElement(String xml) {
@@ -49,22 +52,18 @@ public class XmlParser {
         return doc;
     }
 
-    public String getValue(Element item, String str) {
-        NodeList n = item.getElementsByTagName(str);
-        return this.getElementValue(n.item(0));
-    }
+    public Issue getIssue(Node e) {
 
-    public final String getElementValue(Node elem) {
-        Node child;
-        if (elem != null) {
-            if (elem.hasChildNodes()) {
-                for (child = elem.getFirstChild(); child != null; child = child.getNextSibling()) {
-                    if (child.getNodeType() == Node.TEXT_NODE) {
-                        return child.getNodeValue();
-                    }
-                }
-            }
-        }
-        return "";
+        Issue issue = new Issue();
+
+        NamedNodeMap map = e.getAttributes();
+
+        Node id = map.getNamedItem("id");
+        issue.setId(id.getTextContent());
+
+        issue.setNombre(issue.getId());
+        NodeList nl = e.getChildNodes();
+        return issue;
+
     }
 }

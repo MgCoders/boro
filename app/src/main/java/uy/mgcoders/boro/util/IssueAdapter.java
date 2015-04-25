@@ -45,7 +45,7 @@ public class IssueAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
     @Override
     public RecyclerViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-        View itemView = inflater.inflate(R.layout.task_item, viewGroup, false);
+        View itemView = inflater.inflate(R.layout.issue_item, viewGroup, false);
         return new RecyclerViewHolder(itemView);
     }
 
