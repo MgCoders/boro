@@ -1,18 +1,23 @@
 package uy.mgcoders.boro;
 
-import android.support.v7.app.ActionBarActivity;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import uy.mgcoders.boro.objects.Task;
-import uy.mgcoders.boro.util.TaskAdapter;
+import uy.mgcoders.boro.comm.ApiClient;
+import uy.mgcoders.boro.exp.BoroException;
+import uy.mgcoders.boro.objects.Issue;
+import uy.mgcoders.boro.util.IssueAdapter;
+import uy.mgcoders.boro.util.Query;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -20,13 +25,14 @@ public class MainActivity extends ActionBarActivity {
     private Toolbar toolbar;
 
     private RecyclerView mRecyclerView;
-    private TaskAdapter mAdapter;
+    private IssueAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+
+    private UserIssuesTask mIssuesTask;
+    private List<Issue> mIssues = new ArrayList<>();
 
     public MainActivity() {
     }
-
-    private List<Task> mTasks = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +52,12 @@ public class MainActivity extends ActionBarActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mTasks.add(0,new Task("TN-34"));
-        mTasks.add(1,new Task("TN-35"));
-
         // specify an adapter (see also next example)
-        mAdapter = new TaskAdapter(mTasks);
+        mAdapter = new IssueAdapter(mIssues);
         mRecyclerView.setAdapter(mAdapter);
+
+
+        attemptRetreiveIssues(new Query(Query.ASSIGNED_TO_ME));
     }
 
 
@@ -75,5 +81,49 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void attemptRetreiveIssues(Query query) {
+        if (mIssuesTask == null) {
+            mIssuesTask = new UserIssuesTask(query);
+            mIssuesTask.execute();
+        }
+    }
+
+    /**
+     * Represents an asynchronous task to retreive user's issues.
+     */
+    public class UserIssuesTask extends AsyncTask<Void, Void, List<Issue>> {
+
+        private final Query mQuery;
+
+        UserIssuesTask(Query query) {
+            mQuery = query;
+        }
+
+        @Override
+        protected List<Issue> doInBackground(Void... params) {
+
+            ApiClient client = ApiClient.getInstance();
+            try {
+                return client.getTasks(mQuery);
+            } catch (BoroException e) {
+                Log.v("GET_ISSUES", e.getLocalizedMessage(), e);
+                return new ArrayList<>();
+            }
+
+
+        }
+
+        @Override
+        protected void onPostExecute(List<Issue> issues) {
+            mIssues.addAll(issues);
+            mRecyclerView.getAdapter().notifyDataSetChanged();
+        }
+
+        @Override
+        protected void onCancelled() {
+            mIssuesTask = null;
+        }
     }
 }

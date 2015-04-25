@@ -8,38 +8,38 @@ import android.view.ViewGroup;
 import java.util.Collections;
 import java.util.List;
 
-import uy.mgcoders.boro.objects.Task;
 import uy.mgcoders.boro.R;
+import uy.mgcoders.boro.objects.Issue;
 
 /**
  * Created by r on 24/04/15.
  */
-public class TaskAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
+public class IssueAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
 
-    private List<Task> mTasks = Collections.emptyList();
+    private List<Issue> mIssues = Collections.emptyList();
 
-    public TaskAdapter(List<Task> mTasks) {
-        this.mTasks = mTasks;
+    public IssueAdapter(List<Issue> mIssues) {
+        this.mIssues = mIssues;
     }
 
-    public void updateList(List<Task> data) {
-        mTasks = data;
+    public void updateList(List<Issue> data) {
+        mIssues = data;
         notifyDataSetChanged();
     }
 
-    public void addItem(int position, Task data) {
-        mTasks.add(position, data);
+    public void addItem(int position, Issue data) {
+        mIssues.add(position, data);
         notifyItemInserted(position);
     }
 
     public void removeItem(int position) {
-        mTasks.remove(position);
+        mIssues.remove(position);
         notifyItemRemoved(position);
     }
 
     @Override
     public int getItemCount() {
-        return mTasks.size();
+        return mIssues.size();
     }
 
     @Override
@@ -51,7 +51,7 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
 
     @Override
     public void onBindViewHolder(RecyclerViewHolder viewHolder, int position) {
-        viewHolder.name.setText(mTasks.get(position).getNombre());
+        viewHolder.name.setText(mIssues.get(position).getNombre());
 
     }
 }
