@@ -1,8 +1,7 @@
-package util;
+package uy.mgcoders.boro.util;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import uy.mgcoders.boro.R;

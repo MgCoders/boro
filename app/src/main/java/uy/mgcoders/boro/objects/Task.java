@@ -1,4 +1,4 @@
-package objects;
+package uy.mgcoders.boro.objects;
 
 /**
  * Created by r on 24/04/15.

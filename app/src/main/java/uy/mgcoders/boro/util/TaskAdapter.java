@@ -1,6 +1,5 @@
-package util;
+package uy.mgcoders.boro.util;
 
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +8,7 @@ import android.view.ViewGroup;
 import java.util.Collections;
 import java.util.List;
 
-import objects.Task;
+import uy.mgcoders.boro.objects.Task;
 import uy.mgcoders.boro.R;
 
 /**

@@ -11,8 +11,8 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 import java.util.List;
 
-import objects.Task;
-import util.TaskAdapter;
+import uy.mgcoders.boro.objects.Task;
+import uy.mgcoders.boro.util.TaskAdapter;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -22,6 +22,9 @@ public class MainActivity extends ActionBarActivity {
     private RecyclerView mRecyclerView;
     private TaskAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+
+    public MainActivity() {
+    }
 
     private List<Task> mTasks = new ArrayList<>();
 
