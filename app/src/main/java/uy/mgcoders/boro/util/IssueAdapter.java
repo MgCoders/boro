@@ -57,4 +57,6 @@ public class IssueAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
         viewHolder.state.setText(i.getState());
 
     }
+
+
 }

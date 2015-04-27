@@ -58,11 +58,11 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
         // Set up the login form.
         mHostView = (TextView) findViewById(R.id.host);
-        mHostView.setText("http://"); //TODO: ERASE
+        mHostView.setText("http://ec2-54-183-135-92.us-west-1.compute.amazonaws.com");
 
         mUserView = (AutoCompleteTextView) findViewById(R.id.user);
         populateUserAutoComplete();
-        mUserView.setText(""); //TODO: ERASE
+        mUserView.setText("raul@mgcoders.uy");
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
