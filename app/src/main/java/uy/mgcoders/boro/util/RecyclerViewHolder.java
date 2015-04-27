@@ -12,11 +12,15 @@ import uy.mgcoders.boro.R;
 public class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
     public TextView name;
+    public TextView summary;
+    public TextView state;
 
 
     public RecyclerViewHolder(View itemView) {
         super(itemView);
         name = (TextView) itemView.findViewById(R.id.issue_name);
+        summary = (TextView) itemView.findViewById(R.id.issue_summary);
+        state = (TextView) itemView.findViewById(R.id.issue_state);
 
     }
 }

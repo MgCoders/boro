@@ -51,7 +51,10 @@ public class IssueAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
 
     @Override
     public void onBindViewHolder(RecyclerViewHolder viewHolder, int position) {
-        viewHolder.name.setText(mIssues.get(position).getNombre());
+        Issue i = mIssues.get(position);
+        viewHolder.name.setText(i.getProjectShortName() + "-" + i.getNumberInProject());
+        viewHolder.summary.setText(i.getSummary());
+        viewHolder.state.setText(i.getState());
 
     }
 }

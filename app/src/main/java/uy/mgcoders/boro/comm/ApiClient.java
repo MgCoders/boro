@@ -135,8 +135,10 @@ public class ApiClient {
 
             for (int i = 0; i < nl.getLength(); i++) {
                 Node n = nl.item(i);
-                result.add(xmlParser.getIssue(n));
-                Log.v("GET_TASKS", "Post parameters : " + n.toString());
+                if (n.getNodeType() == Node.ELEMENT_NODE) {
+                    result.add(xmlParser.getIssue(n));
+                    Log.v("GET_TASKS", "Post parameters : " + n.toString());
+                }
 
 
             }
