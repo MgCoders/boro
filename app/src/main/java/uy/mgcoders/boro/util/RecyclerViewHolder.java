@@ -22,5 +22,8 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
         summary = (TextView) itemView.findViewById(R.id.issue_summary);
         state = (TextView) itemView.findViewById(R.id.issue_state);
 
+
     }
+
+
 }

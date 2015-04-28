@@ -9,6 +9,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +20,7 @@ import uy.mgcoders.boro.exp.BoroException;
 import uy.mgcoders.boro.objects.Issue;
 import uy.mgcoders.boro.util.IssueAdapter;
 import uy.mgcoders.boro.util.Query;
-
+import uy.mgcoders.boro.util.RecyclerItemClickListener;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -43,6 +45,17 @@ public class MainActivity extends ActionBarActivity {
         setSupportActionBar(toolbar);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+        mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getBaseContext(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Toast.makeText(view.getContext(), "position = " + position, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+                // ...
+            }
+        }));
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
