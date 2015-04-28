@@ -1,9 +1,11 @@
 package uy.mgcoders.boro.objects;
 
+import java.io.Serializable;
+
 /**
  * Created by r on 24/04/15.
  */
-public class Issue {
+public class Issue implements Serializable {
 
     String numberInProject;
     String summary;

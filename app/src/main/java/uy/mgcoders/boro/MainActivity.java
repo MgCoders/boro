@@ -1,5 +1,6 @@
 package uy.mgcoders.boro;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -10,7 +11,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +48,12 @@ public class MainActivity extends ActionBarActivity {
         mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getBaseContext(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(view.getContext(), "position = " + position, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(view.getContext(), "position = " + position, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, IssueActivity.class);
+                Bundle b = new Bundle();
+                b.putSerializable("selectedIssue", mAdapter.getItem(position)); //TODO: no me gusta mucho traer el issue así.
+                intent.putExtras(b);
+                startActivity(intent);
             }
 
             @Override
