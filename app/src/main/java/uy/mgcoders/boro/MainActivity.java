@@ -12,6 +12,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.github.brnunes.swipeablerecyclerview.SwipeableRecyclerViewTouchListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,6 +75,36 @@ public class MainActivity extends ActionBarActivity {
         // specify an adapter (see also next example)
         mAdapter = new IssueAdapter(mIssues);
         mRecyclerView.setAdapter(mAdapter);
+
+        //swipe effect using https://github.com/romannurik/Android-SwipeToDismiss great library.
+        SwipeableRecyclerViewTouchListener swipeTouchListener =
+                new SwipeableRecyclerViewTouchListener(mRecyclerView,
+                        new SwipeableRecyclerViewTouchListener.SwipeListener() {
+                            @Override
+                            public boolean canSwipe(int position) {
+                                return true;
+                            }
+
+                            @Override
+                            public void onDismissedBySwipeLeft(RecyclerView recyclerView, int[] reverseSortedPositions) {
+                                for (int position : reverseSortedPositions) {
+                                    mIssues.remove(position);
+                                    mAdapter.notifyItemRemoved(position);
+                                }
+                                mAdapter.notifyDataSetChanged();
+                            }
+
+                            @Override
+                            public void onDismissedBySwipeRight(RecyclerView recyclerView, int[] reverseSortedPositions) {
+                                for (int position : reverseSortedPositions) {
+                                    mIssues.remove(position);
+                                    mAdapter.notifyItemRemoved(position);
+                                }
+                                mAdapter.notifyDataSetChanged();
+                            }
+                        });
+
+        mRecyclerView.addOnItemTouchListener(swipeTouchListener);
 
 
         attemptRetreiveIssues(new Query(Query.ASSIGNED_TO_ME));

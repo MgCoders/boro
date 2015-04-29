@@ -5,12 +5,17 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import uy.mgcoders.boro.objects.Issue;
 
 
 public class IssueActivity extends ActionBarActivity {
 
+    public TextView name;
+    public TextView summary;
+    public TextView state;
+    public TextView description;
     private Toolbar toolbar;
     private Issue mIssue;
 
@@ -24,6 +29,19 @@ public class IssueActivity extends ActionBarActivity {
 
         Bundle b = getIntent().getExtras();
         mIssue = (Issue) b.getSerializable("selectedIssue");
+
+        name = (TextView) findViewById(R.id.issue_name);
+        summary = (TextView) findViewById(R.id.issue_summary);
+        state = (TextView) findViewById(R.id.issue_state);
+        description = (TextView) findViewById(R.id.issue_description);
+
+        name.setText(mIssue.getName());
+        summary.setText(mIssue.getSummary());
+        state.setText(mIssue.getState());
+        description.setText(mIssue.getDescription());
+
+
+
     }
 
 

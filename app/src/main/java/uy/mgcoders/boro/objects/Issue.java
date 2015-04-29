@@ -35,6 +35,10 @@ public class Issue implements Serializable {
                 '}';
     }
 
+    public String getName() {
+        return projectShortName + "-" + numberInProject;
+    }
+
     public String getNumberInProject() {
         return numberInProject;
     }
