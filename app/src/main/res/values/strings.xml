@@ -1,11 +1,13 @@
 <resources>
     <string name="app_name">Boro</string>
 
-    <string name="hello_world">Hello world!</string>
+    <string name="hello_world" translatable="false">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="error_invalid_host">Invalid Host</string>
-    <string name="title_activity_issue">IssueActivity</string>
-    <string name="title_activity_ticker">TickerActivity</string>
+    <string name="title_activity_issue">Issue</string>
+    <string name="title_activity_ticker" translatable="false">Ticker</string>
+    <string name="title_activity_main">Open Issues</string>
     <string name="start">Start</string>
     <string name="stop">Stop</string>
+    <string name="order">Order</string>
 </resources>

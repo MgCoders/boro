@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Boro</string>
+    <string name="action_settings">Configuración</string>
+    <string name="action_sign_in">Ingresar</string>
+    <string name="action_sign_in_short">Ingresar</string>
+    <string name="error_field_required">Este campo es obligatorio</string>
+    <string name="error_incorrect_password">Contraseña incorrecta</string>
+    <string name="error_invalid_host">Servidor inválido</string>
+    <string name="error_invalid_password">Constraseña demasiado corta</string>
+    <string name="error_invalid_user">Usuario inválido</string>
+    <string name="hello_world"></string>
+    <string name="order">Ordenar</string>
+    <string name="prompt_host">Servidor</string>
+    <string name="prompt_password">Contraseña</string>
+    <string name="prompt_user">Usuario</string>
+    <string name="start">Iniciar</string>
+    <string name="stop">Parar</string>
+    <string name="title_activity_issue">Tarea</string>
+    <string name="title_activity_login">Ingreso</string>
+    <string name="title_activity_main">Tareas Abiertas</string>
+    <string name="title_activity_ticker"></string>
+</resources>

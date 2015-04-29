@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name" />
+            android:label="@string/title_activity_main" />
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login"
@@ -29,17 +29,7 @@
         <activity
             android:name=".IssueActivity"
             android:label="@string/title_activity_issue" />
-        <activity
-            android:name=".xmlp.ItemeListActivity"
-            android:label="@string/title_iteme_list" />
-        <activity
-            android:name=".xmlp.ItemeDetailActivity"
-            android:label="@string/title_iteme_detail"
-            android:parentActivityName=".xmlp.ItemeListActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="uy.mgcoders.boro.xmlp.ItemeListActivity" />
-        </activity>
+
         <activity
             android:name=".TickerActivity"
             android:label="@string/title_activity_ticker"></activity>
