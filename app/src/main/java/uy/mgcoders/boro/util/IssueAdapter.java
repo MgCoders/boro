@@ -37,6 +37,10 @@ public class IssueAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
         notifyItemRemoved(position);
     }
 
+    public Issue getItem(int position) {
+        return mIssues.get(position);
+    }
+
     @Override
     public int getItemCount() {
         return mIssues.size();
