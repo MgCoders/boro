@@ -88,8 +88,7 @@ public class MainActivity extends ActionBarActivity {
                             @Override
                             public void onDismissedBySwipeLeft(RecyclerView recyclerView, int[] reverseSortedPositions) {
                                 for (int position : reverseSortedPositions) {
-                                    mIssues.remove(position);
-                                    mAdapter.notifyItemRemoved(position);
+                                    mAdapter.removeItem(position);
                                 }
                                 mAdapter.notifyDataSetChanged();
                             }
@@ -97,8 +96,7 @@ public class MainActivity extends ActionBarActivity {
                             @Override
                             public void onDismissedBySwipeRight(RecyclerView recyclerView, int[] reverseSortedPositions) {
                                 for (int position : reverseSortedPositions) {
-                                    mIssues.remove(position);
-                                    mAdapter.notifyItemRemoved(position);
+                                    mAdapter.removeItem(position);
                                 }
                                 mAdapter.notifyDataSetChanged();
                             }
