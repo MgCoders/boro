@@ -4,14 +4,47 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Chronometer;
+
+import uy.mgcoders.boro.objects.Issue;
 
 
 public class TickerActivity extends ActionBarActivity {
+
+    private Button mStart;
+    private Button mStop;
+    private Chronometer mTicker;
+    private Issue mIssue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ticker);
+
+        Bundle b = getIntent().getExtras();
+        mIssue = (Issue) b.getSerializable("selectedIssue");
+
+        mStart = (Button) findViewById(R.id.btnStart);
+        mStop = (Button) findViewById(R.id.btnStop);
+        mTicker = (Chronometer) findViewById(R.id.chronometer);
+
+        mStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mTicker.start();
+            }
+        });
+
+        mStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mTicker.stop();
+            }
+        });
+
+
     }
 
 

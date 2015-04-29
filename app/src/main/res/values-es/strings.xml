@@ -20,4 +20,6 @@
     <string name="title_activity_login">Ingreso</string>
     <string name="title_activity_main">Tareas Abiertas</string>
     <string name="title_activity_ticker"></string>
+    <string name="close_issue">Cerrar Tarea</string>
+    <string name="register_time">Registrar Tiempo</string>
 </resources>

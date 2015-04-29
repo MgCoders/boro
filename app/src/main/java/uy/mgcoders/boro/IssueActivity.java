@@ -1,10 +1,13 @@
 package uy.mgcoders.boro;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import uy.mgcoders.boro.objects.Issue;
@@ -18,6 +21,8 @@ public class IssueActivity extends ActionBarActivity {
     public TextView description;
     private Toolbar toolbar;
     private Issue mIssue;
+    private Button mClose;
+    private Button mRegisterTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +40,24 @@ public class IssueActivity extends ActionBarActivity {
         state = (TextView) findViewById(R.id.issue_state);
         description = (TextView) findViewById(R.id.issue_description);
 
+        mClose = (Button) findViewById(R.id.btnClose);
+        mRegisterTime = (Button) findViewById(R.id.btnRegisterTime);
+
         name.setText(mIssue.getName());
         summary.setText(mIssue.getSummary());
         state.setText(mIssue.getState());
         description.setText(mIssue.getDescription());
+
+        mRegisterTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(IssueActivity.this, TickerActivity.class);
+                Bundle b = new Bundle();
+                b.putSerializable("selectedIssue", mIssue); //TODO: no me gusta mucho traer el issue así.
+                intent.putExtras(b);
+                startActivity(intent);
+            }
+        });
 
 
 
