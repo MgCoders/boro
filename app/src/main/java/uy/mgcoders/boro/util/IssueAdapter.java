@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import uy.mgcoders.boro.R;
@@ -17,9 +18,27 @@ import uy.mgcoders.boro.objects.Issue;
 public class IssueAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
 
     private List<Issue> mIssues = Collections.emptyList();
+    private boolean issuesOrderedByPriority = true;
+    private Comparator<Issue> mIssueComparator = new Comparator<Issue>() {
+        @Override
+        public int compare(Issue lhs, Issue rhs) {
+            //Toogle
+            issuesOrderedByPriority = !issuesOrderedByPriority;
+
+            if (issuesOrderedByPriority)
+                return lhs.getPriority().compareToIgnoreCase(rhs.getPriority());
+            else if (lhs.getProjectShortName().compareToIgnoreCase(rhs.getProjectShortName()) == 0)
+                return lhs.getNumberInProject().compareToIgnoreCase(rhs.getNumberInProject());
+            else
+                return lhs.getProjectShortName().compareToIgnoreCase(rhs.getProjectShortName());
+        }
+
+    };
 
     public IssueAdapter(List<Issue> mIssues) {
         this.mIssues = mIssues;
+        //Sort first time by priority.
+        sortIssuesToogle();
     }
 
     public void updateList(List<Issue> data) {
@@ -35,6 +54,11 @@ public class IssueAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
     public void removeItem(int position) {
         mIssues.remove(position);
         notifyItemRemoved(position);
+    }
+
+    public void sortIssuesToogle() {
+        Collections.sort(mIssues, mIssueComparator);
+        notifyDataSetChanged();
     }
 
     public Issue getItem(int position) {

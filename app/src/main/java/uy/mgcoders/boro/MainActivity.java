@@ -95,11 +95,16 @@ public class MainActivity extends ActionBarActivity {
 
                             @Override
                             public void onDismissedBySwipeRight(RecyclerView recyclerView, int[] reverseSortedPositions) {
-                                for (int position : reverseSortedPositions) {
-                                    mAdapter.removeItem(position);
-                                }
-                                mAdapter.notifyDataSetChanged();
+                                //Go to tickerActivity
+                                Issue selectedIssue = mAdapter.getItem(reverseSortedPositions[0]);
+                                Intent intent = new Intent(MainActivity.this, TickerActivity.class);
+                                Bundle b = new Bundle();
+                                b.putSerializable("selectedIssue", selectedIssue);
+                                intent.putExtras(b);
+                                startActivity(intent);
                             }
+
+
                         });
 
         mRecyclerView.addOnItemTouchListener(swipeTouchListener);
@@ -123,13 +128,20 @@ public class MainActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id) {
+            case R.id.action_orderIssues:
+                mAdapter.sortIssuesToogle();
+                break;
+            case R.id.action_closedIssues:
+                break;
+            case R.id.action_settings:
+                return true;
         }
+
 
         return super.onOptionsItemSelected(item);
     }
+
 
     public void attemptRetreiveIssues(Query query) {
         if (mIssuesTask == null) {
