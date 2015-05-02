@@ -27,6 +27,7 @@ public class XmlParser {
 
     static final String KEY_ISSUE = "issue";
     static final String KEY_FIELD = "field";
+    static final String WORKTYPE = "workType";
 
 
     public Document getDomElement(String xml) {
@@ -90,14 +91,6 @@ public class XmlParser {
 
     public Issue getIssue(Node e) {
 
-        /* Issue issue = new Issue();
-
-       NamedNodeMap map = e.getAttributes();
-
-        Node id = map.getNamedItem("id");
-        issue.setId(id.getTextContent());
-
-        issue.setNombre(issue.getId());*/
 
         Map<String, String> map = getFields(e);
 
@@ -107,9 +100,12 @@ public class XmlParser {
         String priority = map.get("Priority");
         String state = map.get("State");
         String projectShortName = map.get("projectShortName");
+        String id = map.get("id");
 
 
-        return new Issue(numberInProject, summary, description, priority, state, projectShortName);
+        return new Issue(id, numberInProject, summary, description, priority, state, projectShortName);
 
     }
+
+
 }

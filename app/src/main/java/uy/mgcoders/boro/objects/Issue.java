@@ -7,14 +7,40 @@ import java.io.Serializable;
  */
 public class Issue implements Serializable {
 
+    String id;
     String numberInProject;
     String summary;
     String description;
     String priority;
     String state;
     String projectShortName;
+    Color color;
 
-    public Issue(String numberInProject, String summary, String description, String priority, String state, String projectShortName) {
+    public Issue(IssueCompact c) {
+
+        //TODO: Esto esta mal, hacerlo de nuevo.
+
+        this.id = c.getId();
+        Field f = c.getFields().get(0);
+        if (f.getName().equalsIgnoreCase("projectShortName")) this.projectShortName = f.getValue();
+        f = c.getFields().get(1);
+        if (f.getName().equalsIgnoreCase("numberInProject")) this.numberInProject = f.getValue();
+        f = c.getFields().get(2);
+        if (f.getName().equalsIgnoreCase("summary")) this.summary = f.getValue();
+        f = c.getFields().get(3);
+        if (f.getName().equalsIgnoreCase("description")) this.description = f.getValue();
+        f = c.getFields().get(13);
+        if (f.getName().equalsIgnoreCase("priority")) {
+            this.priority = f.getValueId();
+            this.color = f.getColor();
+        }
+        f = c.getFields().get(15);
+        if (f.getName().equalsIgnoreCase("state")) this.state = f.getValueId();
+
+    }
+
+    public Issue(String id, String numberInProject, String summary, String description, String priority, String state, String projectShortName) {
+        this.id = id;
         this.numberInProject = numberInProject;
         this.summary = summary;
         this.description = description;
@@ -33,6 +59,14 @@ public class Issue implements Serializable {
                 ", state='" + state + '\'' +
                 ", projectShortName='" + projectShortName + '\'' +
                 '}';
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {

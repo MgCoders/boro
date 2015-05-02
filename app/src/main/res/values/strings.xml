@@ -12,4 +12,7 @@
     <string name="order">Order</string>
     <string name="register_time">Register Time</string>
     <string name="close_issue">Close Issue</string>
+    <string name="pause">Pause</string>
+    <string name="timetrack_disabled">Time track is disabled for</string>
+    <string name="register">Register</string>
 </resources>

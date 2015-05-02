@@ -15,26 +15,77 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="119dp"
+        android:layout_marginTop="71dp"
         android:format="%hh%mm%ss"
-        android:textSize="@dimen/abc_text_size_display_1_material" />
+        android:textSize="44dp" />
 
     <Button
         android:id="@+id/btnStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/chronometer"
-        android:layout_marginTop="46dp"
-        android:layout_toLeftOf="@+id/chronometer"
-        android:layout_toStartOf="@+id/chronometer"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="53dp"
         android:text="@string/start" />
 
     <Button
         android:id="@+id/btnStop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/btnStart"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/chronometer"
+        android:layout_toStartOf="@+id/chronometer"
+        android:text="@string/stop" />
+
+    <Spinner
+        android:id="@+id/spinnerWorkTypes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnStart"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="44dp"
+        android:spinnerMode="dropdown" />
+
+    <EditText
+        android:id="@+id/textWorkDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/spinnerWorkTypes"
+        android:layout_marginTop="21dp"
+        android:ems="10"
+        android:hint="Descripcion"
+        android:inputType="textMultiLine" />
+
+    <Button
+        android:id="@+id/btnWorkRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_toEndOf="@+id/chronometer"
         android:layout_toRightOf="@+id/chronometer"
-        android:text="@string/stop" />
+        android:text="@string/register" />
+
+    <TextView
+        android:id="@+id/textWorkProject"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="Small Text"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/textWorkIssue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/textWorkProject"
+        android:text="Medium Text"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 </RelativeLayout>

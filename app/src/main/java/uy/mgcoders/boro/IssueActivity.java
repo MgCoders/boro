@@ -1,16 +1,22 @@
 package uy.mgcoders.boro;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import uy.mgcoders.boro.comm.ApiClient;
+import uy.mgcoders.boro.exp.BoroException;
 import uy.mgcoders.boro.objects.Issue;
+import uy.mgcoders.boro.objects.WorkItemTypes;
 
 
 public class IssueActivity extends ActionBarActivity {
@@ -23,6 +29,8 @@ public class IssueActivity extends ActionBarActivity {
     private Issue mIssue;
     private Button mClose;
     private Button mRegisterTime;
+    private WorkItemTypes mTypes;
+    private WorkTypesTask mWorkTypesTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,16 +59,31 @@ public class IssueActivity extends ActionBarActivity {
         mRegisterTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(IssueActivity.this, TickerActivity.class);
-                Bundle b = new Bundle();
-                b.putSerializable("selectedIssue", mIssue); //TODO: no me gusta mucho traer el issue así.
-                intent.putExtras(b);
-                startActivity(intent);
+
+                if (mTypes == null)
+                    Toast.makeText(IssueActivity.this, getString(R.string.timetrack_disabled), Toast.LENGTH_LONG);
+                else {
+                    Intent intent = new Intent(IssueActivity.this, TickerActivity.class);
+                    Bundle b = new Bundle();
+                    b.putSerializable("workTypes", mTypes);
+                    b.putSerializable("selectedIssue", mIssue); //TODO: no me gusta mucho traer el issue así.
+                    intent.putExtras(b);
+                    startActivity(intent);
+                }
             }
         });
 
+        attemptRetreiveWorkTypes(); //Async retreive work types.
 
 
+
+    }
+
+    private void attemptRetreiveWorkTypes() {
+        if (mWorkTypesTask == null) {
+            mWorkTypesTask = new WorkTypesTask(mIssue.getProjectShortName());
+            mWorkTypesTask.execute();
+        }
     }
 
 
@@ -84,5 +107,41 @@ public class IssueActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Represents an asynchronous task to retreive project's work types.
+     */
+    public class WorkTypesTask extends AsyncTask<Void, Void, WorkItemTypes> {
+
+        private final String mProjectId;
+
+        WorkTypesTask(String projectId) {
+            mProjectId = projectId;
+        }
+
+        @Override
+        protected WorkItemTypes doInBackground(Void... params) {
+
+            ApiClient client = ApiClient.getInstance();
+            try {
+                return client.getWorkTypes(mProjectId);
+            } catch (BoroException e) {
+                Log.v("GET_TYPES", e.getLocalizedMessage(), e);
+                return null;
+            }
+
+
+        }
+
+        @Override
+        protected void onPostExecute(WorkItemTypes types) {
+            mTypes = types;
+        }
+
+        @Override
+        protected void onCancelled() {
+            mWorkTypesTask = null;
+        }
     }
 }

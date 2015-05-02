@@ -16,20 +16,33 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
+import org.simpleframework.xml.transform.RegistryMatcher;
 
 import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import uy.mgcoders.boro.exp.BoroException;
 import uy.mgcoders.boro.exp.NotLoggedInException;
 import uy.mgcoders.boro.objects.Issue;
+import uy.mgcoders.boro.objects.IssueCompact;
+import uy.mgcoders.boro.objects.IssueCompacts;
+import uy.mgcoders.boro.objects.WorkItem;
+import uy.mgcoders.boro.objects.WorkItemTypes;
+import uy.mgcoders.boro.objects.WorkItems;
+import uy.mgcoders.boro.util.DateFormatTransformer;
 import uy.mgcoders.boro.util.Query;
 
 /**
@@ -129,22 +142,18 @@ public class ApiClient {
             HttpResponse response = httpclient.execute(request);
             HttpEntity httpEntity = response.getEntity();
             String xml = EntityUtils.toString(httpEntity);
-            XmlParser xmlParser = new XmlParser();
-            Document doc = xmlParser.getDomElement(xml); // getting DOM element
-            NodeList nl = doc.getElementsByTagName(XmlParser.KEY_ISSUE);
-
-            for (int i = 0; i < nl.getLength(); i++) {
-                Node n = nl.item(i);
-                if (n.getNodeType() == Node.ELEMENT_NODE) {
-                    result.add(xmlParser.getIssue(n));
-                    Log.v("GET_TASKS", "Post parameters : " + n.toString());
-                }
 
 
+            Serializer serializer = new Persister();
+
+            Reader reader = new StringReader(xml);
+
+            IssueCompacts compacts = serializer.read(IssueCompacts.class, reader, false);
+
+            for (IssueCompact c : compacts.getIssues()) {
+                result.add(new Issue(c));
             }
-            {
 
-            }
 
         } catch (URISyntaxException e) {
             e.printStackTrace();
@@ -152,9 +161,155 @@ public class ApiClient {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
 
         return result;
+    }
+
+    public WorkItemTypes getWorkTypes(String projectId) throws BoroException {
+        WorkItemTypes types = null;
+
+        if (httpclient == null) throw new NotLoggedInException("fail");
+
+        HttpGet request = new HttpGet();
+        try {
+
+            request.setURI(new URI(host + "/rest/admin/project/" + projectId + "/timetracking/worktype"));
+
+            HttpResponse response = httpclient.execute(request);
+
+            if (response.getStatusLine().getStatusCode() == 400)
+                throw new BoroException("Time tracking disabled for project");
+
+            HttpEntity httpEntity = response.getEntity();
+            String xml = EntityUtils.toString(httpEntity);
+
+
+            Serializer serializer = new Persister();
+
+            Reader reader = new StringReader(xml);
+
+            types = serializer.read(WorkItemTypes.class, reader, false);
+
+
+            Log.v("GET_TYPES", "Work Item Types : " + types.getWorkTypes().size());
+
+
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        return types;
+    }
+
+
+    public List<WorkItem> getWorkItems(String issueId) throws BoroException {
+        if (httpclient == null) throw new NotLoggedInException("fail");
+
+        List<WorkItem> result = new ArrayList<>();
+
+        HttpGet request = new HttpGet();
+        try {
+
+            request.setURI(new URI(host + "/rest/issue/3_Li-13/timetracking/workitem/"));
+
+            HttpResponse response = httpclient.execute(request);
+
+            if (response.getStatusLine().getStatusCode() == 400)
+                throw new BoroException("Time tracking disabled for project");
+
+            HttpEntity httpEntity = response.getEntity();
+            String xml = EntityUtils.toString(httpEntity);
+
+            DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S z");
+
+
+            RegistryMatcher m = new RegistryMatcher();
+            m.bind(Date.class, new DateFormatTransformer(format));
+
+
+            Serializer serializer = new Persister(m);
+
+            Reader reader = new StringReader(xml);
+
+            WorkItems items = serializer.read(WorkItems.class, reader, false);
+
+
+            Log.v("GET_TASKS", "Post parameters : " + items.toString());
+
+
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        return result;
+
+
+
+
+    }
+
+    public boolean registerWork(WorkItem mWork, String issueId) throws BoroException {
+        if (httpclient == null) throw new NotLoggedInException("fail");
+
+        HttpPost httppost = new HttpPost(host + "/rest/issue/" + issueId + "/timetracking/workitem");
+        try {
+
+            httppost.setHeader("Content-type", "application/xml");
+
+
+            Serializer serializer = new Persister();
+
+            Writer writer = new StringWriter();
+
+            serializer.write(mWork, writer);
+            StringEntity e = new StringEntity(writer.toString());
+            httppost.setEntity(e);
+
+
+            HttpResponse response = httpclient.execute(httppost);
+
+            Log.v("REGISTER_WORK", "Sending 'POST' request to URL : " + httppost.getURI());
+            Log.v("REGISTER_WORK", "Post parameters : " + httppost.getEntity());
+            Log.v("REGISTER_WORK", "Response Code : " +
+                    response.getStatusLine().getStatusCode());
+
+            if (response.getStatusLine().getStatusCode() != 200) throw new BoroException("fail");
+
+
+            String responseAsText = EntityUtils.toString(response.getEntity());
+            //Json sacar session
+            Log.v("REGISTER_WORK", "Response from server: " + responseAsText);
+
+
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        return true;
     }
 }

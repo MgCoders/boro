@@ -32,4 +32,10 @@ dependencies {
     compile 'com.google.android.gms:play-services:7.0.0'
     compile 'org.immutables:gson:2.0.9'
     compile 'com.android.support:support-v4:22.1.1'
+    compile('org.simpleframework:simple-xml:2.7.+') {
+        exclude module: 'stax'
+        exclude module: 'stax-api'
+        exclude module: 'xpp3'
+    }
+    compile 'com.squareup.retrofit:retrofit:1.9.0'
 }
