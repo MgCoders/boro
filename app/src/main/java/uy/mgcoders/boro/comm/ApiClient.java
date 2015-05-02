@@ -36,6 +36,7 @@ import java.util.List;
 
 import uy.mgcoders.boro.exp.BoroException;
 import uy.mgcoders.boro.exp.NotLoggedInException;
+import uy.mgcoders.boro.objects.Author;
 import uy.mgcoders.boro.objects.Issue;
 import uy.mgcoders.boro.objects.IssueCompact;
 import uy.mgcoders.boro.objects.IssueCompacts;
@@ -266,16 +267,29 @@ public class ApiClient {
 
     }
 
-    public boolean registerWork(WorkItem mWork, String issueId) throws BoroException {
+    public boolean registerWork(WorkItem mWork, Issue issue) throws BoroException {
+
+        mWork.getWorkType().setUrl(null);
+        mWork.getWorkType().setName(null);
+        Author a = new Author();
+        a.setLogin(issue.getAsignee());
+        mWork.setAuthor(a);
+        mWork.setDescription(mWork.getDescription() + " --Registered with Boro");
+
         if (httpclient == null) throw new NotLoggedInException("fail");
 
-        HttpPost httppost = new HttpPost(host + "/rest/issue/" + issueId + "/timetracking/workitem");
+        HttpPost httppost = new HttpPost(host + "/rest/issue/" + issue.getId() + "/timetracking/workitem");
         try {
 
             httppost.setHeader("Content-type", "application/xml");
 
+            DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S z");
 
-            Serializer serializer = new Persister();
+
+            RegistryMatcher m = new RegistryMatcher();
+            m.bind(Date.class, new DateFormatTransformer(format));
+
+            Serializer serializer = new Persister(m);
 
             Writer writer = new StringWriter();
 
@@ -291,22 +305,16 @@ public class ApiClient {
             Log.v("REGISTER_WORK", "Response Code : " +
                     response.getStatusLine().getStatusCode());
 
-            if (response.getStatusLine().getStatusCode() != 200) throw new BoroException("fail");
+            if (response.getStatusLine().getStatusCode() != 201) return false;
 
 
             String responseAsText = EntityUtils.toString(response.getEntity());
-            //Json sacar session
+
             Log.v("REGISTER_WORK", "Response from server: " + responseAsText);
 
 
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new BoroException(e.getMessage());
         }
 
 

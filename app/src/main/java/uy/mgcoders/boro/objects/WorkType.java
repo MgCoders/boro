@@ -10,13 +10,13 @@ import java.io.Serializable;
 @Element(name = "workType")
 public class WorkType implements Serializable {
 
-    @Element
+    @Element(required = false)
     String name;
 
-    @Element
+    @Element(required = false)
     String id;
 
-    @Element
+    @Element(required = false)
     String url;
 
     public String getName() {

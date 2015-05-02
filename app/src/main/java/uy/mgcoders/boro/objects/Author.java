@@ -12,10 +12,10 @@ public class Author {
     @Attribute
     String login;
 
-    @Attribute
+    @Attribute(required = false)
     String ringId;
 
-    @Attribute
+    @Attribute(required = false)
     String url;
 
     public String getLogin() {

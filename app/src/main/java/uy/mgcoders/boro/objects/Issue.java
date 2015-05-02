@@ -1,6 +1,7 @@
 package uy.mgcoders.boro.objects;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * Created by r on 24/04/15.
@@ -15,27 +16,30 @@ public class Issue implements Serializable {
     String state;
     String projectShortName;
     Color color;
+    String assignee;
 
     public Issue(IssueCompact c) {
 
         //TODO: Esto esta mal, hacerlo de nuevo.
-
+        Map<String, Field> map = c.getAttrMap();
         this.id = c.getId();
-        Field f = c.getFields().get(0);
-        if (f.getName().equalsIgnoreCase("projectShortName")) this.projectShortName = f.getValue();
-        f = c.getFields().get(1);
-        if (f.getName().equalsIgnoreCase("numberInProject")) this.numberInProject = f.getValue();
-        f = c.getFields().get(2);
-        if (f.getName().equalsIgnoreCase("summary")) this.summary = f.getValue();
-        f = c.getFields().get(3);
-        if (f.getName().equalsIgnoreCase("description")) this.description = f.getValue();
-        f = c.getFields().get(13);
-        if (f.getName().equalsIgnoreCase("priority")) {
+        Field f = map.get("projectShortName".toUpperCase());
+        if (f != null) this.projectShortName = f.getValue();
+        f = map.get("numberInProject".toUpperCase());
+        this.numberInProject = f.getValue();
+        f = map.get("summary".toUpperCase());
+        if (f != null) this.summary = f.getValue();
+        f = map.get("description".toUpperCase());
+        if (f != null) this.description = f.getValue();
+        f = map.get("priority".toUpperCase());
+        if (f != null) {
             this.priority = f.getValueId();
             this.color = f.getColor();
         }
-        f = c.getFields().get(15);
-        if (f.getName().equalsIgnoreCase("state")) this.state = f.getValueId();
+        f = map.get("state".toUpperCase());
+        if (f != null) this.state = f.getValueId();
+        f = map.get("Assignee".toUpperCase());
+        if (f != null) this.assignee = f.getValue();
 
     }
 
@@ -59,6 +63,22 @@ public class Issue implements Serializable {
                 ", state='" + state + '\'' +
                 ", projectShortName='" + projectShortName + '\'' +
                 '}';
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public String getAsignee() {
+        return assignee;
+    }
+
+    public void setAsignee(String asignee) {
+        this.assignee = asignee;
     }
 
     public String getId() {

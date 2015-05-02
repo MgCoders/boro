@@ -117,10 +117,10 @@ public class TickerActivity extends ActionBarActivity {
         w.setDescription(mDescription.getText().toString());
         w.setWorkType((WorkType) mWorkTypesSpinner.getSelectedItem());
 
-        w.setDuration(TimeUnit.MILLISECONDS.toMinutes(timeWhenStopped));
+        w.setDuration(TimeUnit.MILLISECONDS.toMinutes(-timeWhenStopped));
 
         if (mregiRegisterWorkTask == null)
-            mregiRegisterWorkTask = new RegisterWorkTask(w, mIssue.getId());
+            mregiRegisterWorkTask = new RegisterWorkTask(w, mIssue);
         mregiRegisterWorkTask.execute();
 
         Log.v("WORK", w.toString());
@@ -155,11 +155,11 @@ public class TickerActivity extends ActionBarActivity {
     public class RegisterWorkTask extends AsyncTask<Void, Void, Boolean> {
 
         private final WorkItem mWork;
-        private final String mIssueId;
+        private final Issue mIssue;
 
-        RegisterWorkTask(WorkItem work, String issueId) {
+        RegisterWorkTask(WorkItem work, Issue issue) {
             mWork = work;
-            mIssueId = issueId;
+            mIssue = issue;
         }
 
         @Override
@@ -167,7 +167,7 @@ public class TickerActivity extends ActionBarActivity {
 
             ApiClient client = ApiClient.getInstance();
             try {
-                return client.registerWork(mWork, mIssueId);
+                return client.registerWork(mWork, mIssue);
             } catch (BoroException e) {
                 Log.v("REGISTER_WORK", e.getLocalizedMessage(), e);
                 return false;
