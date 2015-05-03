@@ -26,7 +26,7 @@ public class WorkItem {
     Author author;
 
     @Element(required = false)
-    WorkType workType;
+    Worktype worktype;
 
     public String getId() {
         return id;
@@ -68,11 +68,11 @@ public class WorkItem {
         this.author = author;
     }
 
-    public WorkType getWorkType() {
-        return workType;
+    public Worktype getWorkType() {
+        return worktype;
     }
 
-    public void setWorkType(WorkType workType) {
-        this.workType = workType;
+    public void setWorkType(Worktype worktype) {
+        this.worktype = worktype;
     }
 }

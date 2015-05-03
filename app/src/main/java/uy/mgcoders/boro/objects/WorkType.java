@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * Created by raul on 01/05/15.
  */
-@Element(name = "workType")
+@Element(name = "workType") //para recibir tipos
 public class WorkType implements Serializable {
 
     @Element(required = false)
@@ -41,5 +41,10 @@ public class WorkType implements Serializable {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

@@ -26,6 +26,7 @@ import uy.mgcoders.boro.objects.Issue;
 import uy.mgcoders.boro.objects.WorkItem;
 import uy.mgcoders.boro.objects.WorkItemTypes;
 import uy.mgcoders.boro.objects.WorkType;
+import uy.mgcoders.boro.objects.Worktype;
 
 
 public class TickerActivity extends ActionBarActivity {
@@ -81,9 +82,7 @@ public class TickerActivity extends ActionBarActivity {
         mStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mTicker.stop();
-                mTicker.setBase(SystemClock.elapsedRealtime());
-                timeWhenStopped = 0;
+                resetTicker();
             }
         });
 
@@ -107,6 +106,12 @@ public class TickerActivity extends ActionBarActivity {
 
     }
 
+    private void resetTicker() {
+        mTicker.stop();
+        mTicker.setBase(SystemClock.elapsedRealtime());
+        timeWhenStopped = 0;
+    }
+
     private void attemptRegisterWork() {
 
         mTicker.stop();
@@ -115,13 +120,19 @@ public class TickerActivity extends ActionBarActivity {
         WorkItem w = new WorkItem();
         w.setDate(new Date());
         w.setDescription(mDescription.getText().toString());
-        w.setWorkType((WorkType) mWorkTypesSpinner.getSelectedItem());
+        WorkType wwt = (WorkType) mWorkTypesSpinner.getSelectedItem();
+
+        Worktype wt = new Worktype();
+        wt.setName(wwt.getName());
+
+        w.setWorkType(wt);
 
         w.setDuration(TimeUnit.MILLISECONDS.toMinutes(-timeWhenStopped));
 
         if (mregiRegisterWorkTask == null)
             mregiRegisterWorkTask = new RegisterWorkTask(w, mIssue);
         mregiRegisterWorkTask.execute();
+        mRegister.setEnabled(false);
 
         Log.v("WORK", w.toString());
     }
@@ -178,9 +189,15 @@ public class TickerActivity extends ActionBarActivity {
 
         @Override
         protected void onPostExecute(Boolean ok) {
-            if (ok)
-                Toast.makeText(TickerActivity.this, "GOOD!", Toast.LENGTH_LONG);
-            else Toast.makeText(TickerActivity.this, "NAAA!", Toast.LENGTH_LONG);
+            if (ok) {
+                Toast.makeText(TickerActivity.this, "GOOD!", Toast.LENGTH_LONG).show();
+                resetTicker();
+            } else {
+                Toast.makeText(TickerActivity.this, "NAAA!", Toast.LENGTH_LONG).show();
+                mTicker.stop();
+            }
+
+            mRegister.setEnabled(true);
         }
 
         @Override

@@ -14,6 +14,7 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.simpleframework.xml.Serializer;
@@ -24,7 +25,6 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -67,22 +67,6 @@ public class ApiClient {
 
     }
 
-    public static HttpResponse makeRequest(String uri, String json) {
-        try {
-            HttpPost httpPost = new HttpPost(uri);
-            httpPost.setEntity(new StringEntity(json));
-            httpPost.setHeader("Accept", "application/json");
-            httpPost.setHeader("Content-type", "application/json");
-            return new DefaultHttpClient().execute(httpPost);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     public void login(String host, String user, String password) throws BoroException {
 
@@ -263,14 +247,11 @@ public class ApiClient {
         return result;
 
 
-
-
     }
 
     public boolean registerWork(WorkItem mWork, Issue issue) throws BoroException {
 
-        mWork.getWorkType().setUrl(null);
-        mWork.getWorkType().setName(null);
+
         Author a = new Author();
         a.setLogin(issue.getAsignee());
         mWork.setAuthor(a);
@@ -281,7 +262,8 @@ public class ApiClient {
         HttpPost httppost = new HttpPost(host + "/rest/issue/" + issue.getId() + "/timetracking/workitem");
         try {
 
-            httppost.setHeader("Content-type", "application/xml");
+            httppost.setHeader("Content-type", "application/xml; charset=UTF-8");
+            httppost.setHeader("Vary", "Accept-Encoding");
 
             DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S z");
 
@@ -289,13 +271,18 @@ public class ApiClient {
             RegistryMatcher m = new RegistryMatcher();
             m.bind(Date.class, new DateFormatTransformer(format));
 
+
             Serializer serializer = new Persister(m);
 
             Writer writer = new StringWriter();
 
             serializer.write(mWork, writer);
-            StringEntity e = new StringEntity(writer.toString());
+
+            StringEntity e = new StringEntity(writer.toString(), HTTP.UTF_8);
+            e.setContentEncoding("UTF-8");
             httppost.setEntity(e);
+
+            HttpParams params = httppost.getParams();
 
 
             HttpResponse response = httpclient.execute(httppost);
