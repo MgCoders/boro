@@ -22,9 +22,6 @@ public class IssueAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
     private Comparator<Issue> mIssueComparator = new Comparator<Issue>() {
         @Override
         public int compare(Issue lhs, Issue rhs) {
-            //Toogle
-            issuesOrderedByPriority = !issuesOrderedByPriority;
-
             if (issuesOrderedByPriority)
                 return lhs.getPriority().compareToIgnoreCase(rhs.getPriority());
             else if (lhs.getProjectShortName().compareToIgnoreCase(rhs.getProjectShortName()) == 0)
@@ -58,6 +55,7 @@ public class IssueAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
 
     public void sortIssuesToogle() {
         Collections.sort(mIssues, mIssueComparator);
+        issuesOrderedByPriority = !issuesOrderedByPriority;
         notifyDataSetChanged();
     }
 
