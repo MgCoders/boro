@@ -23,6 +23,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -31,6 +32,7 @@ import java.util.List;
 
 import uy.mgcoders.boro.comm.ApiClient;
 import uy.mgcoders.boro.exp.BoroException;
+import uy.mgcoders.boro.util.SecurePreferences;
 
 
 /**
@@ -39,30 +41,41 @@ import uy.mgcoders.boro.exp.BoroException;
 public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
 
+    SecurePreferences preferences;
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
-
     // UI references.
     private AutoCompleteTextView mUserView;
     private TextView mHostView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private CheckBox mChkRemember;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        mChkRemember = (CheckBox) findViewById(R.id.chkRemember);
+
+        //Preferences
+        preferences = new SecurePreferences(LoginActivity.this, "LoginPreferences", "Magnesium Coders Boro Boro", true);
+        preferences.put("user", "raul@mgcoders.uy");
+        preferences.put("host", "http://ec2-54-183-135-92.us-west-1.compute.amazonaws.com");
+        String pre_user = preferences.getString("user");
+        String pre_host = preferences.getString("host");
+        String pre_pass = preferences.getString("pass");
+
         // Set up the login form.
         mHostView = (TextView) findViewById(R.id.host);
-        mHostView.setText("http://ec2-54-183-135-92.us-west-1.compute.amazonaws.com");
+        mHostView.setText(pre_host);
 
         mUserView = (AutoCompleteTextView) findViewById(R.id.user);
         populateUserAutoComplete();
-        mUserView.setText("raul@mgcoders.uy");
+        mUserView.setText(pre_user);
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -75,6 +88,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 return false;
             }
         });
+        mPasswordView.setText(pre_pass);
 
 
         Button mSignInButton = (Button) findViewById(R.id.sign_in_button);
@@ -112,6 +126,13 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         String host = mHostView.getText().toString();
         String user = mUserView.getText().toString();
         String password = mPasswordView.getText().toString();
+
+        preferences.put("user", user);
+        preferences.put("host", host);
+        if (mChkRemember.isChecked()) {
+            preferences.put("pass", password);
+
+        }
 
         boolean cancel = false;
         View focusView = null;

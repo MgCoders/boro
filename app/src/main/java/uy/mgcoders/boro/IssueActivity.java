@@ -27,7 +27,6 @@ public class IssueActivity extends ActionBarActivity {
     public TextView description;
     private Toolbar toolbar;
     private Issue mIssue;
-    private Button mClose;
     private Button mRegisterTime;
     private WorkItemTypes mTypes;
     private WorkTypesTask mWorkTypesTask;
@@ -48,7 +47,6 @@ public class IssueActivity extends ActionBarActivity {
         state = (TextView) findViewById(R.id.issue_state);
         description = (TextView) findViewById(R.id.issue_description);
 
-        mClose = (Button) findViewById(R.id.btnClose);
         mRegisterTime = (Button) findViewById(R.id.btnRegisterTime);
 
         name.setText(mIssue.getName());
@@ -61,7 +59,7 @@ public class IssueActivity extends ActionBarActivity {
             public void onClick(View v) {
 
                 if (mTypes == null)
-                    Toast.makeText(IssueActivity.this, getString(R.string.timetrack_disabled), Toast.LENGTH_LONG);
+                    Toast.makeText(IssueActivity.this, getString(R.string.timetrack_disabled), Toast.LENGTH_LONG).show();
                 else {
                     Intent intent = new Intent(IssueActivity.this, TickerActivity.class);
                     Bundle b = new Bundle();

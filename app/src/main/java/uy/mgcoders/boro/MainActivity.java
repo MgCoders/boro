@@ -12,8 +12,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.github.brnunes.swipeablerecyclerview.SwipeableRecyclerViewTouchListener;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,38 +74,6 @@ public class MainActivity extends ActionBarActivity {
         mAdapter = new IssueAdapter(mIssues);
         mRecyclerView.setAdapter(mAdapter);
 
-        //swipe effect using https://github.com/romannurik/Android-SwipeToDismiss great library.
-        SwipeableRecyclerViewTouchListener swipeTouchListener =
-                new SwipeableRecyclerViewTouchListener(mRecyclerView,
-                        new SwipeableRecyclerViewTouchListener.SwipeListener() {
-                            @Override
-                            public boolean canSwipe(int position) {
-                                return true;
-                            }
-
-                            @Override
-                            public void onDismissedBySwipeLeft(RecyclerView recyclerView, int[] reverseSortedPositions) {
-                                for (int position : reverseSortedPositions) {
-                                    mAdapter.removeItem(position);
-                                }
-                                mAdapter.notifyDataSetChanged();
-                            }
-
-                            @Override
-                            public void onDismissedBySwipeRight(RecyclerView recyclerView, int[] reverseSortedPositions) {
-                                //Go to tickerActivity
-                                Issue selectedIssue = mAdapter.getItem(reverseSortedPositions[0]);
-                                Intent intent = new Intent(MainActivity.this, TickerActivity.class);
-                                Bundle b = new Bundle();
-                                b.putSerializable("selectedIssue", selectedIssue);
-                                intent.putExtras(b);
-                                startActivity(intent);
-                            }
-
-
-                        });
-
-        mRecyclerView.addOnItemTouchListener(swipeTouchListener);
 
 
         attemptRetreiveIssues(new Query(Query.ASSIGNED_TO_ME));

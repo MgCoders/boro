@@ -1,5 +1,6 @@
 package uy.mgcoders.boro.util;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -81,6 +82,8 @@ public class IssueAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
         viewHolder.name.setText(i.getProjectShortName() + "-" + i.getNumberInProject());
         viewHolder.summary.setText(i.getSummary());
         viewHolder.state.setText(i.getState());
+        viewHolder.priority.setText(i.getPriority());
+        viewHolder.priority.setTextColor(Color.parseColor(i.getColor().getFg()));
 
     }
 

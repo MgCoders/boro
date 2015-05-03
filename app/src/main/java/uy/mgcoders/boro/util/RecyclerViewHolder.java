@@ -14,6 +14,7 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
     public TextView name;
     public TextView summary;
     public TextView state;
+    public TextView priority;
 
 
     public RecyclerViewHolder(View itemView) {
@@ -21,6 +22,7 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
         name = (TextView) itemView.findViewById(R.id.issue_name);
         summary = (TextView) itemView.findViewById(R.id.issue_summary);
         state = (TextView) itemView.findViewById(R.id.issue_state);
+        priority = (TextView) itemView.findViewById(R.id.issue_priority);
 
 
     }

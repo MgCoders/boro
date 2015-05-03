@@ -9,7 +9,6 @@
     <string name="error_invalid_host">Servidor inválido</string>
     <string name="error_invalid_password">Constraseña demasiado corta</string>
     <string name="error_invalid_user">Usuario inválido</string>
-    <string name="hello_world"></string>
     <string name="order">Ordenar</string>
     <string name="prompt_host">Servidor</string>
     <string name="prompt_password">Contraseña</string>
@@ -19,7 +18,9 @@
     <string name="title_activity_issue">Tarea</string>
     <string name="title_activity_login">Ingreso</string>
     <string name="title_activity_main">Tareas Abiertas</string>
-    <string name="title_activity_ticker"></string>
     <string name="close_issue">Cerrar Tarea</string>
     <string name="register_time">Registrar Tiempo</string>
+    <string name="pause">Pausa</string>
+    <string name="register">Registrar</string>
+    <string name="timetrack_disabled">Registro de horas desahailitado</string>
 </resources>

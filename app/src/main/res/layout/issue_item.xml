@@ -10,7 +10,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="2dp"
+        android:layout_margin="5dp"
         android:clickable="true"
         app:cardElevation="2dp"
         app:cardMaxElevation="3dp">
@@ -50,6 +50,18 @@
                 android:padding="5dp"
                 android:text="initialText"
                 android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/issue_priority"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/issue_state"
+                android:layout_marginEnd="15dp"
+                android:layout_marginRight="15dp"
+                android:text="initialText"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
 
         </RelativeLayout>
 
